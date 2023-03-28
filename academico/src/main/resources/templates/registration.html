@@ -1,3 +1,30 @@
+Skip to content
+Product
+Solutions
+Open Source
+Pricing
+Search
+Sign in
+Sign up
+rogercaetanos
+/
+academicologin
+Public
+Code
+Issues
+Pull requests
+Actions
+Projects
+Security
+Insights
+academicologin/academicologin/src/main/resources/templates/registration.html
+
+rogerio_000590 Validação do email válido para cadastro
+Latest commit 55c2400 4 minutes ago
+ History
+ 0 contributors
+99 lines (81 sloc)  2.91 KB
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,7 +74,7 @@
 						to our awesome app!</div>
 				</div>
 
-				<h1>Registration</h1> 
+				<h1>Registration</h1>
 
 				<form th:action="@{/registration}" method="post" th:object="${user}">
 					<div class="form-group">
@@ -65,7 +92,7 @@
 					<div class="form-group">
 						<label class="control-label" for="email"> Email </label> <input
 							id="email" class="form-control" th:field="*{email}" 
-							onblur="validarDados('email', document.getElementById('email').value,'/search/api/getSearchResult/');"
+							onblur="validarDados('email', document.getElementById('email').value,'/registration/ajax/getEmail/');"
 							required
 							autofocus="autofocus" />	
 					</div>
@@ -74,8 +101,9 @@
 
 					<div class="form-group">
 						<label class="control-label" for="password"> Password </label> <input
-							id="password" class="form-control" type="password"
-							th:field="*{password}" required autofocus="autofocus" />
+							id="password" class="form-control" type="password" th:field="*{password}" 
+							required 
+							autofocus="autofocus" />
 					</div>
 
 					<div class="form-group">
@@ -96,3 +124,17 @@
 	</div>
 </body>
 </html>
+Footer
+© 2023 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Docs
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About

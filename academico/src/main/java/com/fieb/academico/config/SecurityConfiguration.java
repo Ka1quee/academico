@@ -9,8 +9,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.fieb.academico.service.UserService;
+import static org.springframework.http.HttpMethod.GET;
+
 
 @Configuration
 @EnableWebSecurity
@@ -18,31 +21,47 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UserService userService;
-
+	
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-
+	
 	public DaoAuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
 		auth.setUserDetailsService(userService);
 		auth.setPasswordEncoder(passwordEncoder());
 		return auth;
-
 	}
-
+	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(authenticationProvider());
-		super.configure(auth);
 	}
 
 	@Override
-		protected void configure(HttpSecurity http) throws Exception {
-			http.authorizeRequests().antMatchers(
-					"registration**").permitAll();
-
-		}
-
+	protected void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests().antMatchers(
+				"/registration**",
+				"/registration/**",
+				"/js/**",
+				"/css/**",
+				"/img/**"
+				).permitAll()
+		      .and()
+		      .authorizeRequests().antMatchers(GET, "/users/**").hasAnyAuthority("ROLE_USER")
+	          .anyRequest().authenticated()
+	          .and()
+	          .formLogin().defaultSuccessUrl("/users/home", true)
+	          .loginPage("/login")
+	          .permitAll()
+	          .and()
+	          .logout()
+	          .invalidateHttpSession(true)
+	          .clearAuthentication(true)
+	          .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+	          .logoutSuccessUrl("/login?logout")
+	          .permitAll();
+	}
+	
 }

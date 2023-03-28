@@ -2,35 +2,20 @@ package com.fieb.academico.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-
-import com.fieb.academico.service.UserService;
-import com.fieb.academico.web.dto.UserDto;
 
 @Controller
 public class UserController {
-
-	private UserService userService;
-
-	public UserController(UserService userService) {
-		this.userService = userService;
-	}
-
 	
-	@ModelAttribute("user")
-	public UserDto userDto() {
-		return new UserDto();
+	
+	@GetMapping("/login")
+	public String login() {
+		return "login";
 	}
-	@GetMapping("/registration")
-	public String showRegistrationForm() {
-		return "registration";
+	
+	@GetMapping("/users/home")
+	public String home() {
+		return "index";
 	}
+	
 
-	@PostMapping("/registration")
-	public String registerUserAccount(@ModelAttribute("user") UserDto userDto) {
-		userService.save(userDto);
-		return "redirect:/registration?success";
-
-	}
 }
